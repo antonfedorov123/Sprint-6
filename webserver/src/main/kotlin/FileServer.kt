@@ -1,5 +1,7 @@
 import ru.sber.filesystem.VFilesystem
+import ru.sber.filesystem.VPath
 import java.io.IOException
+import java.io.PrintWriter
 import java.net.ServerSocket
 
 /**
@@ -28,11 +30,8 @@ class FileServer {
          */
         while (true) {
 
-            // TODO Delete this once you start working on your solution.
-            //throw new UnsupportedOperationException();
-
             // TODO 1) Use socket.accept to get a Socket object
-
+            val acceptedSocket = socket.accept()
 
             /*
             * TODO 2) Using Socket.getInputStream(), parse the received HTTP
@@ -43,7 +42,8 @@ class FileServer {
             *
             *     GET /path/to/file HTTP/1.1
             */
-
+            val reader = acceptedSocket.getInputStream().bufferedReader()
+            val splitRequest = reader.readLine().split("\\s+".toRegex())
 
             /*
              * TODO 3) Using the parsed path to the target file, construct an
@@ -65,6 +65,15 @@ class FileServer {
              *
              * Don't forget to close the output stream.
              */
+            val fileText = fs.readFile(VPath(splitRequest[1]))
+            val response: String = if (fileText.isNullOrEmpty())
+                "HTTP/1.0 404 Not Found\r\nServer: FileServer\r\n\r\n"
+            else
+                "HTTP/1.0 200 OK\r\nServer: FileServer\r\n\r\n$fileText"
+            val write = PrintWriter(acceptedSocket.getOutputStream())
+            write.print(response)
+            write.close()
+
         }
     }
 }
