@@ -1,14 +1,18 @@
 package ru.sber.services
 
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.ComponentScan
 import org.springframework.context.annotation.Configuration
+import org.springframework.core.annotation.Order
 import org.springframework.stereotype.Component
 
 interface ServiceInterface
 
 @Component
+@Qualifier("serviceInterface")
+@Order(1)
 class FirstServiceImpl : ServiceInterface {
     override fun toString(): String {
         return "FirstServiceImpl"
@@ -16,6 +20,8 @@ class FirstServiceImpl : ServiceInterface {
 }
 
 @Component
+@Qualifier("serviceInterface")
+@Order(2)
 class SecondServiceImpl : ServiceInterface {
     override fun toString(): String {
         return "SecondServiceImpl"
@@ -25,7 +31,8 @@ class SecondServiceImpl : ServiceInterface {
 @Component
 class SeveralBeanInjectionService {
     @Autowired
-    lateinit var services: ArrayList<ServiceInterface>
+    @Qualifier("serviceInterface")
+    lateinit var services: List<ServiceInterface>
 
     override fun toString(): String {
         return "SeveralBeanInjectionService(services=$services)"
