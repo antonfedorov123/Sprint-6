@@ -9,13 +9,13 @@ import ru.sber.adressbook.services.BookService
 import ru.sber.adressbook.vo.DataBook
 
 @Controller
-@RequestMapping
+@RequestMapping("/")
 class BooksController {
 
     @Autowired
     lateinit var bookService: BookService
 
-    @GetMapping("/")
+    @GetMapping("/app")
     fun home(): String {
         return "home"
     }
@@ -29,15 +29,14 @@ class BooksController {
     fun addNote(@ModelAttribute dataBook: DataBook, model: Model): String {
         bookService.addBook(dataBook)
         model.addAttribute("res", "Контакт добавлен")
-        return "response"
+        return "redirect:/app/list"
     }
-
 
     @GetMapping("/app/{index}/remove")
     fun deleteNote(@PathVariable index: Int, model: Model): String {
         bookService.removeBook(index)
         model.addAttribute("res", "Контакт удален")
-        return "response"
+        return "redirect:/app/list"
     }
 
     @GetMapping("/app/{index}/get")
@@ -47,7 +46,7 @@ class BooksController {
         return "contactBook"
     }
 
-    @GetMapping("/app/getAll")
+    @GetMapping("/app/list")
     fun getAllContact(@RequestParam query: Map<String, String>, model: Model): String {
         val searchResult = bookService.getListBooks()
 
@@ -56,7 +55,9 @@ class BooksController {
         return "allContact"
     }
     @GetMapping("/app/{index}/update")
-    fun updateFormContact(@PathVariable index: Int): String{
+    fun updateFormContact(@PathVariable index: Int, model: Model): String {
+        val view = bookService.getBook(index)
+        model.addAttribute("res", view)
         return "updateBook"
     }
 
@@ -64,7 +65,7 @@ class BooksController {
     fun updateContact(@PathVariable index: Int, @ModelAttribute dataBook: DataBook, model: Model):String {
         bookService.updateBook(dataBook, index)
         model.addAttribute("res","Контакт изменен")
-        return "response"
+        return "redirect:/app/list"
     }
 
 }

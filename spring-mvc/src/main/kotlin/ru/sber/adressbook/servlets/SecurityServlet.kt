@@ -19,7 +19,6 @@ class SecurityServlet: HttpServlet() {
         //servletContext.getRequestDispatcher("/login.html")!!.forward(request, response)
 
         response!!.contentType = "text/html"
-        println(File("").absolutePath)
         val text = this::class.java.classLoader.getResource("templates/login.html").readText()
 
         val outStream: OutputStream = response.outputStream
@@ -34,15 +33,21 @@ class SecurityServlet: HttpServlet() {
         val passwordForm = request.getParameter("password")
         var redirect = "/login"
         if (username == usernameForm && password == passwordForm) {
-                redirect = "/app/list"
-                val cookie = Cookie("auth", Instant.now().epochSecond.toString())
-                cookie.maxAge = -1
-                response.addCookie(cookie)
-                println(redirect)
+            redirect = "/app"
+            val cookie = Cookie("auth", Instant.now().epochSecond.toString())
+            cookie.maxAge = -1
+            response.addCookie(cookie)
+
+            val text = this::class.java.classLoader.getResource("templates/home.html").readText()
+
+            val outStream: OutputStream = response.outputStream
+            outStream.write(text.toByteArray(charset("UTF-8")))
+            outStream.flush()
+            outStream.close()
+            return
         }
 
-        response.sendRedirect(redirect)
+        response.sendRedirect(request.getContextPath() + redirect);
     }
-
 
 }
