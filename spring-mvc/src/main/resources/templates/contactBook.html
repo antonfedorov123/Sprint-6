@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+    </head>
+    <body>
+        <!--/*@thymesVar id="res" type="ch"*/-->
+        <p>firstName </p><div th:utext="${res.firstName}">undefined</div><br>
+        <p>lastName </p><div th:utext="${res.lastName}">undefined</div><br>
+        <p>email </p><div th:utext="${res.email}">undefined</div><br>
+        <p>phone </p><div th:utext="${res.phone}">undefined</div><br>
+        <p>address </p><div th:utext="${res.address}">undefined</div><br>
+
+        <p><a href="http://localhost:8090/home.html">Вернуться в меню</a> </p>
+    </body>
+</html>
