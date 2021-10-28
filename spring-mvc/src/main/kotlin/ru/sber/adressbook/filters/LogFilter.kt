@@ -12,16 +12,14 @@ import javax.servlet.http.HttpServletResponse
 @Order(1)
 @WebFilter(urlPatterns = ["/*"])
 class LogFilter: HttpFilter() {
-    override fun doFilter(request: HttpServletRequest, response: HttpServletResponse, chain: FilterChain) {
-        LOG.info("Время ${Instant.now()} " +
-                "Тип ${request.method} " +
-                "Протокол ${request.protocol} " +
-                "Порт ${request.serverPort} " +
-                "URL ${request.requestURL}" )
-        super.doFilter(request, response, chain)
+
+    override fun doFilter(rq: HttpServletRequest, rs: HttpServletResponse, chain: FilterChain) {
+        LOG.info("Время ${Instant.now()} Тип ${rq.method} Протокол ${rq.protocol} Порт ${rq.serverPort} URL ${rq.requestURL}")
+        super.doFilter(rq, rs, chain)
     }
 
     companion object {
         val LOG: Logger = Logger.getLogger(LogFilter::class.java.name)
     }
+
 }

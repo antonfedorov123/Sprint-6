@@ -12,24 +12,25 @@ import javax.servlet.http.HttpServletResponse
 @Order(2)
 @WebFilter("/app/*")
 class AuthFilter: HttpFilter() {
+
     override fun doFilter(req: HttpServletRequest, res: HttpServletResponse, chain: FilterChain) {
-        val auth = req
-            .cookies
+
+        val auth = req.cookies
             ?.find { x -> x.name.equals("auth") }
             ?.value
 
-        val isCorrect = auth != null && auth.toLong() < Instant.now().epochSecond
-
-        if (isCorrect) {
+        if (auth != null && auth.toLong() > Instant.now().epochSecond - 60 * 60 * 24) {
             chain.doFilter(req, res)
-        } else {
-            LOG.info("Ошибка при авторизации авторизация")
-            res.sendRedirect("/login")
+            return
         }
+
+        LOG.info("Ошибка при авторизации")
+        res.sendRedirect("/login")
     }
 
     companion object {
         val LOG: Logger = Logger.getLogger(LogFilter::class.java.name)
     }
+
 }
 
