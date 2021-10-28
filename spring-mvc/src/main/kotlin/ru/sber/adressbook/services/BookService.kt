@@ -8,8 +8,9 @@ import java.util.concurrent.ConcurrentHashMap
 class BookService() {
     private val booksMap = ConcurrentHashMap<Int, DataBook>()
 
-    fun addBook(dataBook: DataBook) {
+    fun addBook(dataBook: DataBook): Int {
         booksMap[booksMap.size] = dataBook
+        return booksMap.size - 1
     }
 
     fun updateBook(dataBook: DataBook, index: Int): DataBook? {
@@ -26,6 +27,10 @@ class BookService() {
 
     fun getBook(index: Int): DataBook {
         return booksMap[index]!!
+    }
+
+    fun getLastIndex(): Int {
+        return booksMap.size - 1
     }
 
 }

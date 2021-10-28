@@ -6,9 +6,9 @@
     <body>
         <h2>Меню</h2>
         <p><a href="/app/add">Добавить запись</a></p>
-        <p><a href="/app/{index}/remove">Удалить запись</a></p>
-        <p><a href="/app/{index}/get">Просмотр запись</a></p>
-        <p><a href="/app/{index}/update">Обновить запись</a></p>
+        <p><a th:href="@{'/app/' + ${index} + '/get'}">Просмотр последней записи</a></p>
+        <p><a th:href="@{'/app/' + ${index} + '/update'}">Обновить последнюю запись</a></p>
+        <p><a th:href="@{'/app/' + ${index} + '/remove'}">Удалить последнюю запись</a></p>
         <p><a href="/app/list">Список записей</a></p>
     </body>
 </html>

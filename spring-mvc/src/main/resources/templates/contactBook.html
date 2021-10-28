@@ -4,12 +4,11 @@
         <meta charset="UTF-8">
     </head>
     <body>
-        <!--/*@thymesVar id="res" type="ch"*/-->
-        <p>firstName </p><div th:utext="${res.firstName}">undefined</div><br>
-        <p>lastName </p><div th:utext="${res.lastName}">undefined</div><br>
-        <p>email </p><div th:utext="${res.email}">undefined</div><br>
-        <p>phone </p><div th:utext="${res.phone}">undefined</div><br>
-        <p>address </p><div th:utext="${res.address}">undefined</div><br>
+        <div th:text="'firstName: ' + ${res.firstName}"></div>
+        <div th:text="'lastName: ' + ${res.lastName}"></div>
+        <div th:text="'email: ' + ${res.email}"></div>
+        <div th:text="'phone: ' + ${res.phone}"></div>
+        <div th:text="'address: ' + ${res.address}"></div>
 
         <p><a href="http://localhost:8080/app">Вернуться в меню</a> </p>
     </body>

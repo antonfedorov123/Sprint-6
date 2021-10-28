@@ -16,7 +16,8 @@ class BooksController {
     lateinit var bookService: BookService
 
     @GetMapping("/app")
-    fun home(): String {
+    fun home(model: Model): String {
+        model.addAttribute("index", bookService.getLastIndex())
         return "home"
     }
 
@@ -27,9 +28,9 @@ class BooksController {
 
     @PostMapping("/app/add")
     fun addNote(@ModelAttribute dataBook: DataBook, model: Model): String {
-        bookService.addBook(dataBook)
+        val index = bookService.addBook(dataBook)
         model.addAttribute("res", "Контакт добавлен")
-        return "redirect:/app/list"
+        return "redirect:/app/${index}/get"
     }
 
     @GetMapping("/app/{index}/remove")
