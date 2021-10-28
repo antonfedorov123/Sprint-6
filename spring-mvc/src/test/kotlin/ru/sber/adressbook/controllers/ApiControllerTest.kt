@@ -70,7 +70,7 @@ internal class ApiControllerTest {
     }
 
     @Test
-    fun getBook() {
+    fun viewBook() {
 
 
 
@@ -101,7 +101,7 @@ internal class ApiControllerTest {
     }
 
     @Test
-    fun updateBook() {
+    fun editBook() {
         val origin = DataBook(
             "Иван",
             "Иванов",

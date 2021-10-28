@@ -31,7 +31,7 @@ class ApiController @Autowired constructor(val bookService: BookService) {
 
     @PutMapping("/{id}/edit")
     fun editBook(@PathVariable("id") id: Int, @RequestBody book: DataBook): ResponseEntity<*> {
-        if (bookService.updateBook(index = id, dataBook = book) != null)
+        if (bookService.editBook(index = id, dataBook = book) != null)
             return ResponseEntity(book, HttpStatus.OK)
 
         return ResponseEntity(book, HttpStatus.CREATED)

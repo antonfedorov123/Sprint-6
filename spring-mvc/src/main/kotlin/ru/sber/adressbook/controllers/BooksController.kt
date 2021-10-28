@@ -12,6 +12,10 @@ import ru.sber.adressbook.vo.DataBook
 @RequestMapping("/")
 class BooksController {
 
+    constructor(bookService: BookService) {
+        this.bookService = bookService
+    }
+
     @Autowired
     lateinit var bookService: BookService
 
@@ -30,17 +34,17 @@ class BooksController {
     fun addBook(@ModelAttribute dataBook: DataBook, model: Model): String {
         val index = bookService.addBook(dataBook)
         model.addAttribute("res", "Контакт добавлен")
-        return "redirect:/app/${index}/get"
+        return "redirect:/app/list"
     }
 
-    @GetMapping("/app/{index}/remove")
+    @GetMapping("/app/{index}/delete")
     fun deleteBook(@PathVariable index: Int, model: Model): String {
         bookService.removeBook(index)
         model.addAttribute("res", "Контакт удален")
         return "redirect:/app/list"
     }
 
-    @GetMapping("/app/{index}/get")
+    @GetMapping("/app/{index}/view")
     fun getBook(@PathVariable index: Int, model: Model): String {
         val view = bookService.getBook(index)
         model.addAttribute("res", view)
@@ -55,16 +59,16 @@ class BooksController {
         model.addAttribute("list", "Вот что нашлось:")
         return "allContact"
     }
-    @GetMapping("/app/{index}/update")
-    fun getUpdateBookForm(@PathVariable index: Int, model: Model): String {
+    @GetMapping("/app/{index}/edit")
+    fun geteditBookForm(@PathVariable index: Int, model: Model): String {
         val view = bookService.getBook(index)
         model.addAttribute("res", view)
-        return "updateBook"
+        return "editBook"
     }
 
-    @PostMapping("/app/{index}/update")
-    fun updateBook(@PathVariable index: Int, @ModelAttribute dataBook: DataBook, model: Model):String {
-        bookService.updateBook(dataBook, index)
+    @PostMapping("/app/{index}/edit")
+    fun editBook(@PathVariable index: Int, @ModelAttribute dataBook: DataBook, model: Model):String {
+        bookService.editBook(dataBook, index)
         model.addAttribute("res","Контакт изменен")
         return "redirect:/app/list"
     }

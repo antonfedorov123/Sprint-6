@@ -6,6 +6,8 @@ import java.util.concurrent.ConcurrentHashMap
 
 @Service
 class BookService() {
+
+
     private val booksMap = ConcurrentHashMap<Int, DataBook>()
 
     fun addBook(dataBook: DataBook): DataBook? {
@@ -13,7 +15,7 @@ class BookService() {
         return booksMap.get((booksMap.size - 1))
     }
 
-    fun updateBook(dataBook: DataBook, index: Int): DataBook? {
+    fun editBook(dataBook: DataBook, index: Int): DataBook? {
         return booksMap.put(index, dataBook)
     }
 
