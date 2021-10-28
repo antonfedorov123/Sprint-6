@@ -22,19 +22,19 @@ class BooksController {
     }
 
     @GetMapping("/app/add")
-    fun getNoteAddForm(): String {
+    fun getAddBookForm(): String {
         return "addBook"
     }
 
     @PostMapping("/app/add")
-    fun addNote(@ModelAttribute dataBook: DataBook, model: Model): String {
+    fun addBook(@ModelAttribute dataBook: DataBook, model: Model): String {
         val index = bookService.addBook(dataBook)
         model.addAttribute("res", "Контакт добавлен")
         return "redirect:/app/${index}/get"
     }
 
     @GetMapping("/app/{index}/remove")
-    fun deleteNote(@PathVariable index: Int, model: Model): String {
+    fun deleteBook(@PathVariable index: Int, model: Model): String {
         bookService.removeBook(index)
         model.addAttribute("res", "Контакт удален")
         return "redirect:/app/list"
@@ -48,7 +48,7 @@ class BooksController {
     }
 
     @GetMapping("/app/list")
-    fun getAllContact(@RequestParam query: Map<String, String>, model: Model): String {
+    fun list(@RequestParam query: Map<String, String>, model: Model): String {
         val searchResult = bookService.getListBooks()
 
         model.addAttribute("res", searchResult)
@@ -56,14 +56,14 @@ class BooksController {
         return "allContact"
     }
     @GetMapping("/app/{index}/update")
-    fun updateFormContact(@PathVariable index: Int, model: Model): String {
+    fun getUpdateBookForm(@PathVariable index: Int, model: Model): String {
         val view = bookService.getBook(index)
         model.addAttribute("res", view)
         return "updateBook"
     }
 
     @PostMapping("/app/{index}/update")
-    fun updateContact(@PathVariable index: Int, @ModelAttribute dataBook: DataBook, model: Model):String {
+    fun updateBook(@PathVariable index: Int, @ModelAttribute dataBook: DataBook, model: Model):String {
         bookService.updateBook(dataBook, index)
         model.addAttribute("res","Контакт изменен")
         return "redirect:/app/list"

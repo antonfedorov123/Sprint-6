@@ -18,24 +18,27 @@ class ApiController @Autowired constructor(val bookService: BookService) {
     }
 
     @GetMapping("/list")
-    fun getBooks(@RequestParam(required = false) allParams: Map<String, String>): ResponseEntity<ConcurrentHashMap<Int, DataBook>> {
+    fun listOfBooks(@RequestParam(required = false) allParams: Map<String, String>): ResponseEntity<ConcurrentHashMap<Int, DataBook>> {
         val ads = bookService.getListBooks()
         return ResponseEntity(ads, HttpStatus.OK)
     }
 
     @GetMapping("/{id}/view")
-    fun getBook(@PathVariable("id") id: Int): ResponseEntity<DataBook> {
+    fun viewBook(@PathVariable("id") id: Int): ResponseEntity<DataBook> {
         val book = bookService.getBook(id)
-        return ResponseEntity(book, HttpStatus.OK)
+        return ResponseEntity(book, HttpStatus.FOUND)
     }
 
     @PutMapping("/{id}/edit")
-    fun updateBook(@PathVariable("id") id: Int, @RequestBody book: DataBook): ResponseEntity<*> {
-        return ResponseEntity(bookService.updateBook(index = id, dataBook = book), HttpStatus.OK)
+    fun editBook(@PathVariable("id") id: Int, @RequestBody book: DataBook): ResponseEntity<*> {
+        if (bookService.updateBook(index = id, dataBook = book) != null)
+            return ResponseEntity(book, HttpStatus.OK)
+
+        return ResponseEntity(book, HttpStatus.CREATED)
     }
 
     @DeleteMapping("/{id}/delete")
-    fun removeBook(@PathVariable("id") id: Int): ResponseEntity<*> {
-        return ResponseEntity(bookService.removeBook(id), HttpStatus.OK)
+    fun deleteBook(@PathVariable("id") id: Int): ResponseEntity<*> {
+        return ResponseEntity(bookService.removeBook(id), HttpStatus.FOUND)
     }
 }

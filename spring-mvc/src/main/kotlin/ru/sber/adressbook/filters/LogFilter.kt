@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse
 class LogFilter: HttpFilter() {
 
     override fun doFilter(rq: HttpServletRequest, rs: HttpServletResponse, chain: FilterChain) {
-        LOG.info("Время ${Instant.now()} Тип ${rq.method} Протокол ${rq.protocol} Порт ${rq.serverPort} URL ${rq.requestURL}")
+        LOG.info("${Instant.now()} ${rq.method} ${rq.protocol} ${rq.serverPort} ${rq.requestURL}")
         super.doFilter(rq, rs, chain)
     }
 
