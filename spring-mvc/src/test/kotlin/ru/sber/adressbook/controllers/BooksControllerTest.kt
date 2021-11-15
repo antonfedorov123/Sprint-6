@@ -1,24 +1,26 @@
 package ru.sber.adressbook.controllers
 
-import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.Test
-
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.security.test.context.support.WithMockUser
+import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
+import org.springframework.test.web.servlet.setup.DefaultMockMvcBuilder
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
+import org.springframework.web.context.WebApplicationContext
 import ru.sber.adressbook.services.BookService
 import ru.sber.adressbook.vo.DataBook
 
 @SpringBootTest
 @AutoConfigureMockMvc
-@ExtendWith(SpringExtension::class)
 class BooksControllerTest {
 
     private lateinit var mockMvc: MockMvc
@@ -27,14 +29,21 @@ class BooksControllerTest {
 
     private lateinit var booksController: BooksController
 
+    @Autowired
+    private lateinit var context: WebApplicationContext
+
     @BeforeEach
-    fun beforeEach() {
+    fun init() {
         bookService = BookService()
         booksController = BooksController(bookService)
-        mockMvc = MockMvcBuilders.standaloneSetup(booksController).build()
+        mockMvc = MockMvcBuilders
+            .webAppContextSetup(context)
+            .apply<DefaultMockMvcBuilder>(springSecurity())
+            .build()
     }
 
     @Test
+    @WithMockUser(username = "user", password = "user", roles = ["USER"])
     fun list() {
         mockMvc.perform(MockMvcRequestBuilders.get("/app/list"))
             .andExpect(MockMvcResultMatchers.status().isOk)
@@ -43,6 +52,7 @@ class BooksControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "user", password = "user", roles = ["USER"])
     fun addBook() {
         mockMvc.perform(MockMvcRequestBuilders.get("/app/add"))
             .andExpect(MockMvcResultMatchers.status().isOk)
@@ -50,6 +60,7 @@ class BooksControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "admin", password = "admin", roles = ["ADMIN"])
     fun deleteBook() {
 
         bookService.addBook(DataBook(
@@ -72,6 +83,7 @@ class BooksControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "user", password = "user", roles = ["USER"])
     fun getBook() {
 
         bookService.addBook(DataBook(
@@ -88,6 +100,7 @@ class BooksControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "user", password = "user", roles = ["USER"])
     fun editBook() {
 
         bookService.addBook(DataBook(

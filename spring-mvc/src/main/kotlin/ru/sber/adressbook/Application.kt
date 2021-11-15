@@ -6,8 +6,7 @@ import org.springframework.boot.web.servlet.ServletComponentScan
 
 @ServletComponentScan
 @SpringBootApplication
-class Application {
-}
+class Application
 
 fun main(args: Array<String>) {
     runApplication<Application>(*args)

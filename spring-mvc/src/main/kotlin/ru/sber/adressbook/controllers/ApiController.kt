@@ -3,6 +3,7 @@ package ru.sber.adressbook.controllers
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.security.access.annotation.Secured
 import org.springframework.web.bind.annotation.*
 import ru.sber.adressbook.services.BookService
 import ru.sber.adressbook.vo.DataBook
@@ -37,6 +38,7 @@ class ApiController @Autowired constructor(val bookService: BookService) {
         return ResponseEntity(book, HttpStatus.CREATED)
     }
 
+    @Secured("ROLE_ADMIN")
     @DeleteMapping("/{id}/delete")
     fun deleteBook(@PathVariable("id") id: Int): ResponseEntity<*> {
         return ResponseEntity(bookService.removeBook(id), HttpStatus.FOUND)
