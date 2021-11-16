@@ -4,6 +4,7 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.junit.jupiter.api.Test
 
 import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -33,6 +34,12 @@ internal class ApiControllerTest {
     val mapper = jacksonObjectMapper()
 
     fun getUrl(path: String) : String = "http://localhost:${port}/${path}"
+
+    @BeforeEach
+    fun setup() {
+        val cookie = getCookieForUser("admin", "admin")
+        headers.add("Cookie", cookie)
+    }
 
     @Test
     fun addAddress() {
