@@ -20,7 +20,7 @@ class ApiController @Autowired constructor(val bookService: BookService) {
 
     @GetMapping("/list")
     fun listOfBooks(@RequestParam(required = false) allParams: Map<String, String>): ResponseEntity<ConcurrentHashMap<Int, DataBook>> {
-        val ads = bookService.getListBooks()
+        val ads: ConcurrentHashMap<Int, DataBook> = bookService.getListBooks()
         return ResponseEntity(ads, HttpStatus.OK)
     }
 

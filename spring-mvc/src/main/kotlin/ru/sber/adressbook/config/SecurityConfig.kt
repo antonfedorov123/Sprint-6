@@ -54,7 +54,7 @@ class SecurityConfig (
             .antMatchers("/**").hasAnyRole("ADMIN")
             .anyRequest().authenticated()
             .and()
-            .formLogin().permitAll()
+            .formLogin().permitAll().successForwardUrl("/app")
             .and()
             .logout().permitAll()
     }
